@@ -91,6 +91,7 @@ def main():
                     fh.flush()
                     os.fsync(fh.fileno())
 
+        dist.barrier()
         if rank == 0:
             res = load(out_file)
             meta['prediction'] = [res[k] for k in meta['index']]
