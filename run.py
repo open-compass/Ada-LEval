@@ -31,6 +31,7 @@ def get_token_length(prompt):
     return len(ENC.encode(prompt))
 
 def main():
+    os.makedirs('results', exist_ok=True)
     args = parse_args()
     model_name = args.model
     model = build_model(args.model)
@@ -48,7 +49,7 @@ def main():
         meta = dataset.get_meta()
         indices = list(meta['index'])
         
-        out_file = f'{model_name}_{dname}.pkl'
+        out_file = f'results/{model_name}_{dname}.pkl'
         res = {} if not osp.exists(out_file) else load(out_file)
         tups = [(i, p) for i, p in zip(indices, prompts) if i not in res]
         
@@ -66,7 +67,7 @@ def main():
 
         res = load(out_file)
         meta['prediction'] = [res[k] for k in meta['index']]
-        dump(meta, f'{model_name}_{dname}.xlsx')
+        dump(meta, f'results/{model_name}_{dname}.xlsx')
 
         if args.mode == 'all':
             results = load(RESULT_FILE)
