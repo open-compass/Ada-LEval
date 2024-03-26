@@ -3,6 +3,9 @@ from ada_leval.util import *
 from ada_leval.api import OpenAIWrapper
 from ada_leval.dataset import StackSelect
 
+RESULT_FILE = 'result.json'
+if not osp.exists(RESULT_FILE):
+    dump({}, RESULT_FILE)
 
 settings = ['1k', '2k', '4k', '8k', '16k', '32k', '64k', '128k']
 datasets = [f'stackselect_{k}' for k in settings] + [f'textsort_{k}' for k in settings]
@@ -49,23 +52,27 @@ def main():
         res = {} if not osp.exists(out_file) else load(out_file)
         tups = [(i, p) for i, p in zip(indices, prompts) if i not in res]
         
-        if model.is_api:
-            res = track_progress_rich(
-                model.generate, 
-                [x[1] for x in tups], 
-                nproc=args.nproc, 
-                chunksize=args.nproc, 
-                save=out_file, 
-                keys=[x[0] for x in tups])
-        else:
-            pass
+        if len(tups):
+            if model.is_api:
+                res = track_progress_rich(
+                    model.generate, 
+                    [x[1] for x in tups], 
+                    nproc=args.nproc, 
+                    chunksize=args.nproc, 
+                    save=out_file, 
+                    keys=[x[0] for x in tups])
+            else:
+                pass
+
         res = load(out_file)
         meta['prediction'] = [res[k] for k in meta['index']]
         dump(meta, f'{model_name}_{dname}.xlsx')
 
         if args.mode == 'all':
-            pass
-            # Do the evaluation
+            results = load(RESULT_FILE)
+            acc = dataset.evaluate(meta)
+            results[f'{model_name}_{dname}'] = acc
+            dump(results, RESULT_FILE)
 
 if __name__ == '__main__':
     main()

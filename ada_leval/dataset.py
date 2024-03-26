@@ -51,6 +51,7 @@ Answer: The designation of the most helpful answer.(e.g. A4 means answer 4 is th
             'question': [x['question'] for x in self.data], 
             'answer': [x['answer'] for x in self.data], 
             'tags': [x['tags'] for x in self.data], 
+            'num_choice': [len(x['all_answers']) for x in self.data]
         }
         return pd.DataFrame(res)
         
@@ -73,4 +74,31 @@ You must give me only the designation of the MOST helpful answer.
         return prompt
 
     def evaluate(self, df):
-        assert 'prediction' in df and 'answer' in df
+        assert 'prediction' in df and 'answer' in df and 'num_choice' in df
+
+        def extract(line):
+            nc = line['num_choice']
+            cands = [f'A{i}' for i in range(1, nc + 1)]
+            finds = [line['prediction'].find(c) for c in cands]
+            matched = sum([x for x in finds if x >= 0])
+            if matched >= 1:
+                for i in range(nc - 1, -1, -1):
+                    if finds[i] >= 0:
+                        return cands[i]
+            else:
+                cands = [f'A{i}' for i in range(1, nc + 1)]
+                finds = [line['prediction'].find(c) for c in cands]
+                matched = sum([x for x in finds if x >= 0])
+                if matched >= 1:
+                    for i in range(nc - 1, -1, -1):
+                        if finds[i] >= 0:
+                            return 'A' + cands[i]
+                else:
+                    return '???'
+        extracted = [extract(df.iloc[i]) for i in range(len(df))]
+        df['extracted'] = extracted
+        acc = np.mean([x == y for x, y in zip(df['extracted'], df['answer'])])
+        acc = 100 * acc
+        print(f'StackSelect {self.setting} Accuracy: {acc:.1f}%')
+        return acc
+        
