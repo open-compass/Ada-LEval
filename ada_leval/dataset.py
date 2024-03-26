@@ -2,14 +2,14 @@ from ada_leval.smp import *
 
 class StackSelect:
 
-    def __init__(self, setting='1k', size='normal'):
+    def __init__(self, setting='1k', mode='normal'):
         data = load(f'data/stackselect_{setting}.json')
-        assert size in ['normal', 'less']
-        if size == 'normal':
+        assert mode in ['normal', 'less']
+        if mode == 'normal':
             num = 1000 if int(setting[:-1]) < 32 else 200
-        elif size == 'less':
+        elif mode == 'less':
             num = 200 if int(setting[:-1]) < 32 else 50
-            
+
         if num > 0:
             data = data[:num] 
         for item in data:
