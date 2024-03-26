@@ -34,7 +34,6 @@ model_map = {
     'yi-34b': '01-ai/Yi-34B-Chat', 
     'mistral-7b': 'mistralai/Mistral-7B-v0.1'
 }
-Auto_model = [model_map['chatglm3-6b']]
 
 class HFChatModel:
 
@@ -68,16 +67,13 @@ class HFChatModel:
 
         self.explicit_device = model_kwargs.pop('device', None)
 
-        from transformers import AutoTokenizer, AutoModelForCausalLM, AutoModel
+        from transformers import AutoTokenizer, AutoModelForCausalLM
         from transformers.generation import GenerationConfig
         
         if model_path in model_map:
             model_path = model_map[model_path]
         self.model_path = model_path
-        if model_path in Auto_model:
-            LoadModel = AutoModel
-        else:
-            LoadModel = AutoModelForCausalLM
+        LoadModel = AutoModelForCausalLM
         assert osp.exists(model_path) or len(model_path.split('/')) == 2
 
         device = self.explicit_device if self.explicit_device else "auto"
