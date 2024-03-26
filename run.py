@@ -92,7 +92,8 @@ def main():
             res = {}
             for i in range(world_size):
                 sub_out_file = f'results/{model_name}_{dname}_{i}.pkl'
-                res.update(load(sub_out_file))
+                if osp.exists(sub_out_file):
+                    res.update(load(sub_out_file))
             if osp.exists(out_file):
                 res.update(load(out_file))
             dump(res, out_file)
@@ -106,7 +107,9 @@ def main():
                 acc = dataset.evaluate(meta)
                 results[f'{model_name}_{dname}'] = acc
                 dump(results, RESULT_FILE)
+
         if world_size > 1:
+            dist.barrier()
             os.system(f"rm {f'results/{model_name}_{dname}_{rank}.pkl'}")
 
 if __name__ == '__main__':
