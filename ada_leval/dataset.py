@@ -103,3 +103,42 @@ You must give me only the designation of the MOST helpful answer.
         print(f'StackSelect {self.setting} Accuracy: {acc:.1f}%')
         return acc
         
+
+class TextSort:
+
+    def __init__(self, setting='1k', mode='normal'):
+        data = load(f'data/textsort_{setting}.json')
+        self.setting = setting
+        assert mode in ['normal', 'less']
+        if mode == 'normal':
+            num = 1000 if int(setting[:-1]) < 32 else 200
+        elif mode == 'less':
+            num = 200 if int(setting[:-1]) < 32 else 50
+
+        if num > 0:
+            data = data[:num] 
+        for item in data:
+            book_id = item=['book_id']
+            para_offset = item['para_offset']
+            item['index'] = f"{book_id}_{'_'.join([str(x) for x in para_offset])}"
+        self.data = data
+
+    def __len__(self):
+        return len(self.data)
+    
+    def get_meta(self):
+        res = {
+            'book_id': [x['book_id'] for x in self.data], 
+            'para_offset': [x['para_offset'] for x in self.data], 
+            'answer': [x['answer'] for x in self.data]
+        }
+        return pd.DataFrame(res)
+    
+    def build_prompt(self, line):
+        if isinstance(line, int):
+            line = self.data[line]
+        assert isinstance(line, dict)
+        return line['prompt']
+    
+    def evaluate(self, df):
+        return None

@@ -1,7 +1,7 @@
 from ada_leval.smp import *
 from ada_leval.util import *
 from ada_leval.api import OpenAIWrapper
-from ada_leval.dataset import StackSelect
+from ada_leval.dataset import StackSelect, TextSort
 
 RESULT_FILE = 'result.json'
 if not osp.exists(RESULT_FILE):
@@ -41,7 +41,7 @@ def main():
         if d == 'stackselect':
             dataset = StackSelect(setting=setting, mode=dataset_mode)
         else:
-            pass
+            dataset = TextSort(setting=setting, mode=dataset_mode)
 
         lt = len(dataset)
         prompts = [dataset.build_prompt(i) for i in range(lt)]
