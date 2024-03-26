@@ -96,6 +96,7 @@ You must give me only the designation of the MOST helpful answer.
                             return 'A' + cands[i]
                 else:
                     return '???'
+                
         extracted = [extract(df.iloc[i]) for i in range(len(df))]
         df['extracted'] = extracted
         acc = np.mean([x == y for x, y in zip(df['extracted'], df['answer'])])
@@ -130,7 +131,8 @@ class TextSort:
         res = {
             'book_id': [x['book_id'] for x in self.data], 
             'para_offset': [x['para_offset'] for x in self.data], 
-            'answer': [x['answer'] for x in self.data]
+            'answer': [x['answer'] for x in self.data],
+            'index': [x['index'] for x in self.data]
         }
         return pd.DataFrame(res)
     
@@ -141,4 +143,47 @@ class TextSort:
         return line['prompt']
     
     def evaluate(self, df):
-        return None
+        assert 'prediction' in df and 'answer' in df
+
+        def is_subseq(needle, haystack):
+            current_pos = 0
+            for c in needle:
+                current_pos = haystack.find(c, current_pos) + 1
+                if current_pos == 0:
+                    return False
+            return True
+
+        def extract(line):
+            pred = line['prediction']
+            if 'Answer:' in pred:
+                pred = pred.split('Answer:')[1].strip()
+            try:
+                pred = json.loads(pred)
+                return pred
+            except:
+                import itertools
+                perms = list(itertools.permutations(range(1, 5)))
+                perms = [''.join([str(x) for x in p]) for p in perms]
+                subseq = [is_subseq(p, pred) for p in perms]
+                if sum(subseq) == 1:
+                    for p, s in zip(perms, subseq):
+                        if s:
+                            return [int(pp) for pp in p]
+                return [0, 0, 0, 0]
+        
+        extracted = [extract(df.iloc[i]) for i in range(len(df))]
+        answers = [json.loads(x) for x in df['answer']]
+        hit, tot = 0, 0
+
+        for a, e in zip(answers, extracted):
+            tot += 1
+            flag = True
+            for aa, ee in zip(a, e):
+                if aa != ee:
+                    flag = False
+            hit += flag
+        
+        acc = hit / tot
+        acc = 100 * acc
+        print(f'TextSort {self.setting} Accuracy: {acc:.1f}%')
+        return acc
