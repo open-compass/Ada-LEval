@@ -4,6 +4,7 @@ class StackSelect:
 
     def __init__(self, setting='1k', mode='normal'):
         data = load(f'data/stackselect_{setting}.json')
+        self.setting = setting
         assert mode in ['normal', 'less']
         if mode == 'normal':
             num = 1000 if int(setting[:-1]) < 32 else 200
