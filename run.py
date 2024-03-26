@@ -41,7 +41,7 @@ def main():
         import torch
         import torch.distributed as dist
         torch.cuda.set_device(rank)
-        dist.init_process_group(backend='nccl', timeout=datetime.timedelta(seconds=10800))
+        dist.init_process_group(backend='nccl')
 
     if rank == 0:
         os.makedirs('results', exist_ok=True)
