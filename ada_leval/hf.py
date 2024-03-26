@@ -23,7 +23,6 @@ def get_gpu_num(model_name):
     return 8
 
 model_map = {
-    'chatglm3-6b': 'THUDM/chatglm3-6b',
     'internlm2-7b': 'internlm/internlm2-chat-7b',
     'internlm2-20b': 'internlm/internlm2-chat-20b',
     'qwen-7b-v1.5': 'Qwen/Qwen1.5-7B-Chat',
@@ -42,10 +41,7 @@ class HFChatModel:
     def _get_context_length(self, model, model_path):
         # By default, we use model.config.seq_length
         model_path = model_path.lower()
-        if listinstr(['chatglm'], model_path):
-            context_window = model.config.seq_length
-        else:
-            context_window = model.config.max_position_embeddings
+        context_window = model.config.max_position_embeddings
         return context_window
     
     def _get_context_length_robust(self, model, model_path):
