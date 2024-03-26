@@ -37,6 +37,8 @@ model_map = {
 
 class HFChatModel:
 
+    is_api = False
+
     def _get_context_length(self, model, model_path):
         # By default, we use model.config.seq_length
         model_path = model_path.lower()
