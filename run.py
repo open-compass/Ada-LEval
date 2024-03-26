@@ -36,7 +36,16 @@ def get_token_length(prompt):
     return len(ENC.encode(prompt))
 
 def main():
-    os.makedirs('results', exist_ok=True)
+    rank, world_size = get_rank_and_world_size()
+    if world_size > 1:
+        import torch
+        import torch.distributed as dist
+        torch.cuda.set_device(rank)
+        dist.init_process_group(backend='nccl', timeout=datetime.timedelta(seconds=10800))
+
+    if rank == 0:
+        os.makedirs('results', exist_ok=True)
+
     args = parse_args()
     model_name = args.model
     model = build_model(args.model)
@@ -68,20 +77,30 @@ def main():
                     save=out_file, 
                     keys=[x[0] for x in tups])
             else:
-                for t in tqdm(tups):
+                sub_tups = tups[rank::world_size]
+                sub_res = {}
+                for t in tqdm(sub_tups):
                     index, prompt = t 
-                    res[index] = model.generate(prompt)
+                    sub_res[index] = model.generate(prompt)
+                import portalocker
+
+                with portalocker.Lock(out_file, timeout=20) as fh:
+                    res = load(out_file)
+                    res.update(sub_res)
                     dump(res, out_file)
+                    fh.flush()
+                    os.fsync(fh.fileno())
 
-        res = load(out_file)
-        meta['prediction'] = [res[k] for k in meta['index']]
-        dump(meta, f'results/{model_name}_{dname}.xlsx')
+        if rank == 0:
+            res = load(out_file)
+            meta['prediction'] = [res[k] for k in meta['index']]
+            dump(meta, f'results/{model_name}_{dname}.xlsx')
 
-        if args.mode == 'all':
-            results = load(RESULT_FILE)
-            acc = dataset.evaluate(meta)
-            results[f'{model_name}_{dname}'] = acc
-            dump(results, RESULT_FILE)
+            if args.mode == 'all':
+                results = load(RESULT_FILE)
+                acc = dataset.evaluate(meta)
+                results[f'{model_name}_{dname}'] = acc
+                dump(results, RESULT_FILE)
 
 if __name__ == '__main__':
     main()
