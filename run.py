@@ -56,7 +56,7 @@ def main():
                 nproc=args.nproc, 
                 chunksize=args.nproc, 
                 save=out_file, 
-                key=[x[0] for x in tups])
+                keys=[x[0] for x in tups])
         else:
             pass
         res = load(out_file)
