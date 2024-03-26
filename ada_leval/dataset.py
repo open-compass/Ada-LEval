@@ -118,7 +118,7 @@ class TextSort:
         if num > 0:
             data = data[:num] 
         for item in data:
-            book_id = item=['book_id']
+            book_id = item['book_id']
             para_offset = item['para_offset']
             item['index'] = f"{book_id}_{'_'.join([str(x) for x in para_offset])}"
         self.data = data
