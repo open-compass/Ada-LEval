@@ -1,6 +1,7 @@
 from ada_leval.smp import *
 from ada_leval.util import *
 from ada_leval.api import OpenAIWrapper
+from ada_leval.hf import HFChatModel
 from ada_leval.dataset import StackSelect, TextSort
 
 RESULT_FILE = 'result.json'
@@ -22,6 +23,10 @@ def parse_args():
 def build_model(m):
     if m == 'gpt-4-0125':
         model = OpenAIWrapper('gpt-4-0125-preview')
+    elif m == 'internlm2-7b':
+        model = HFChatModel('internlm2-7b')
+    elif m == 'internlm2-20b':
+        model = HFChatModel('internlm2-20b')
     return model
 
 import tiktoken
@@ -63,7 +68,10 @@ def main():
                     save=out_file, 
                     keys=[x[0] for x in tups])
             else:
-                pass
+                for t in tqdm(tups):
+                    index, prompt = t 
+                    res[index] = model.generate(prompt)
+                    dump(res, out_file)
 
         res = load(out_file)
         meta['prediction'] = [res[k] for k in meta['index']]

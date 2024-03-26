@@ -171,6 +171,13 @@ def dump(data, f, **kwargs):
     suffix = f.split('.')[-1]
     return handlers[suffix](data, f, **kwargs)
 
+import portalocker
+def safe_dump(data, f, **kwargs):
+    with portalocker.Lock(f, timeout=5) as fh:
+        dump(data, f, **kwargs)
+        fh.flush()
+        os.fsync(fh.fileno())
+
 def load(f):
     def load_pkl(pth):
         return pickle.load(open(pth, 'rb'))
