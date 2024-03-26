@@ -172,7 +172,7 @@ class TextSort:
                 return [0, 0, 0, 0]
         
         extracted = [extract(df.iloc[i]) for i in range(len(df))]
-        answers = [json.loads(x) for x in df['answer']]
+        answers = [json.loads(x) if isinstance(x, str) else x for x in df['answer']]
         hit, tot = 0, 0
 
         for a, e in zip(answers, extracted):
