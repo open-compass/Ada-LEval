@@ -88,6 +88,7 @@ APIBASES = {
 
 def GPT_context_window(model):
     length_map = {
+        'gpt-4-0125-preview': 128000,
         'gpt-4-1106-preview': 128000,
         'gpt-4-vision-preview': 128000,
         'gpt-4': 8192,
