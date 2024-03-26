@@ -46,7 +46,7 @@ def main():
         indices = list(meta['index'])
         
         out_file = f'{model_name}_{dname}.pkl'
-        res = {} if not osp.exists(out_file) else load(res)
+        res = {} if not osp.exists(out_file) else load(out_file)
         tups = [(i, p) for i, p in zip(indices, prompts) if i not in res]
         
         if model.is_api:
