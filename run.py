@@ -107,7 +107,7 @@ def main():
                 results[f'{model_name}_{dname}'] = acc
                 dump(results, RESULT_FILE)
         if world_size > 1:
-            os.system(f'rm {out_file}')
+            os.system(f"rm {f'results/{model_name}_{dname}_{rank}.pkl'}")
 
 if __name__ == '__main__':
     main()
