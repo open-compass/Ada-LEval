@@ -106,7 +106,8 @@ def main():
                 acc = dataset.evaluate(meta)
                 results[f'{model_name}_{dname}'] = acc
                 dump(results, RESULT_FILE)
-        shutil.remove(sub_out_file)
+        if world_size > 1:
+            os.system(f'rm {out_file}')
 
 if __name__ == '__main__':
     main()
