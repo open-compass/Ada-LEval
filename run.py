@@ -64,6 +64,7 @@ def main():
         dump(meta, f'{model_name}_{dname}.xlsx')
 
         if args.mode == 'all':
+            pass
             # Do the evaluation
 
 if __name__ == '__main__':
