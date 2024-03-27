@@ -76,7 +76,7 @@ def main():
         tups = [(i, p) for i, p in zip(indices, prompts) if i not in res]
         
         if len(tups):
-            if model.is_api:
+            if getattr(model, 'is_api', False):
                 res = track_progress_rich(
                     model.generate, 
                     [x[1] for x in tups], 
