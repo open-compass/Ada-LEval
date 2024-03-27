@@ -21,7 +21,7 @@ def parse_args():
     args = parser.parse_args()
     return args
 
-def build_model(m, setting):
+def build_model(m, setting=None):
     if 'internlm2' in m:
         session_len = 160000
         from lmdeploy import pipeline, TurbomindEngineConfig
