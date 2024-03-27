@@ -92,7 +92,7 @@ def main():
                 with torch.no_grad():
                     for t in tqdm(sub_tups):
                         index, prompt = t 
-                        sub_res[index] = model.generate(prompt).text
+                        sub_res[index] = model(prompt).text
                         dump(sub_res, sub_out_file)
 
         if world_size > 1:
