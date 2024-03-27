@@ -80,10 +80,11 @@ def main():
                 sub_tups = tups[rank::world_size]
                 sub_out_file = f'results/{model_name}_{dname}_{rank}.pkl'
                 sub_res = {}
-                for t in tqdm(sub_tups):
-                    index, prompt = t 
-                    sub_res[index] = model.generate(prompt)
-                    dump(sub_res, sub_out_file)
+                with torch.no_grad():
+                    for t in tqdm(sub_tups):
+                        index, prompt = t 
+                        sub_res[index] = model.generate(prompt)
+                        dump(sub_res, sub_out_file)
 
         if world_size > 1:
             dist.barrier()
