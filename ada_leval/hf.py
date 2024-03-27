@@ -78,14 +78,39 @@ class HFChatModel:
         LoadModel = AutoModelForCausalLM
         assert osp.exists(model_path) or len(model_path.split('/')) == 2
 
-        device = self.explicit_device if self.explicit_device else "auto"
+        device = model_kwargs.pop('device', 'auto')
+        if device == None:
+            device = 'auto'
             
         self.tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
-        model = LoadModel.from_pretrained(model_path, trust_remote_code=True, device_map='cpu')
+        if 'internlm' in model_path.lower():
+            model = LoadModel.from_pretrained(
+                model_path, trust_remote_code=True, torch_dtype=torch.float16, device_map='cpu')
+        else:
+            model = LoadModel.from_pretrained(model_path, trust_remote_code=True, device_map='cpu')
+
         model = model.eval()
         
-        if device != 'cpu':
-            model = model.to(f'cuda:{device}' if isinstance(device, int) else 'cuda')
+        if device in ['auto', 'cuda']:
+            model = model.to('cuda')
+        elif device == 'cpu':
+            pass
+        elif isinstance(device, int):
+            model = model.to(f'cuda:{device}')
+        elif isinstance(device, list):
+            no_split = []
+            if 'internlm' in model_path.lower():
+                no_split = ['InternLM2DecoderLayer']
+            for i in range(1, 81):
+                from accelerate import dispatch_model, infer_auto_device_map
+                max_memory = {g: f'{i}GiB' for g in device}
+                device_map = infer_auto_device_map(model, max_memory, no_split_module_classes=no_split)
+                if 'disk' not in device_map.values():
+                    model = dispatch_model(model, device_map)
+                    break
+                if i == 80:
+                    exit(1)
+
         try:
             model.generation_config = GenerationConfig.from_pretrained(model_path, trust_remote_code=True, device_map=device)
         except:

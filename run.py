@@ -16,17 +16,21 @@ def parse_args():
     parser.add_argument('--data', type=str, nargs='+', required=True, choices=datasets)
     parser.add_argument('--model', type=str, required=True, choices=['internlm2-7b', 'internlm2-20b', 'gpt-4-0125'])
     parser.add_argument('--mode', type=str, default='all', choices=['infer', 'all'])
+    parser.add_argument('--device', type=str, default=None)
     parser.add_argument('--nproc', type=int, default=4)
     args = parser.parse_args()
     return args
 
-def build_model(m):
+def build_model(m, device=None):
+    if isinstance(device, str):
+        device = device.split(',')
+        device = [int(d) for d in device]
     if m == 'gpt-4-0125':
         model = OpenAIWrapper('gpt-4-0125-preview')
     elif m == 'internlm2-7b':
-        model = HFChatModel('internlm2-7b')
+        model = HFChatModel('internlm2-7b', device=device)
     elif m == 'internlm2-20b':
-        model = HFChatModel('internlm2-20b')
+        model = HFChatModel('internlm2-20b', device=device)
     return model
 
 import tiktoken
@@ -48,14 +52,14 @@ def main():
 
     args = parse_args()
     model_name = args.model
-    model = build_model(args.model)
+    model = build_model(args.model, args.device)
     for dname in args.data:
         d, setting = dname.split('_')
         dataset_mode = 'less' if model.is_api else 'normal'
 
         if d == 'stackselect':
             dataset = StackSelect(setting=setting, mode=dataset_mode)
-        else:
+        elif d == 'textsort':
             dataset = TextSort(setting=setting, mode=dataset_mode)
 
         lt = len(dataset)
