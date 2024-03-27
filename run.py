@@ -59,7 +59,7 @@ def main():
     model = build_model(args.model)
     for dname in args.data:
         d, setting = dname.split('_')
-        dataset_mode = 'less' if model.is_api else 'normal'
+        dataset_mode = 'less' if getattr(model, 'is_api', False) else 'normal'
 
         if d == 'stackselect':
             dataset = StackSelect(setting=setting, mode=dataset_mode)
