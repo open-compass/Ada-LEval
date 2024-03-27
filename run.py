@@ -1,7 +1,6 @@
 from ada_leval.smp import *
 from ada_leval.util import *
 from ada_leval.api import OpenAIWrapper
-# from ada_leval.hf import HFChatModel
 from ada_leval.dataset import StackSelect, TextSort
 
 RESULT_FILE = 'result.json'
@@ -9,7 +8,7 @@ if not osp.exists(RESULT_FILE):
     dump({}, RESULT_FILE)
 
 settings = ['1k', '2k', '4k', '8k', '16k', '32k', '64k', '128k']
-datasets = [f'stackselect_{k}' for k in settings] + [f'textsort_{k}' for k in settings]
+datasets = [f'stackselect_{k}' for k in settings + ['6k', '12k']] + [f'textsort_{k}' for k in settings]
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -31,10 +30,8 @@ def build_model(m, setting=None):
         model = OpenAIWrapper('gpt-4-0125-preview')
     elif m == 'internlm2-7b':
         model = pipeline('internlm/internlm2-chat-7b', backend_config=backend_config)
-        # model = HFChatModel('internlm2-7b')
     elif m == 'internlm2-20b':
         model = pipeline('internlm/internlm2-chat-20b', backend_config=backend_config)
-        # model = HFChatModel('internlm2-20b')
     return model
 
 import tiktoken
