@@ -1,7 +1,7 @@
 from ada_leval.smp import *
 from ada_leval.util import *
 from ada_leval.api import OpenAIWrapper
-from ada_leval.hf import HFChatModel
+# from ada_leval.hf import HFChatModel
 from ada_leval.dataset import StackSelect, TextSort
 
 RESULT_FILE = 'result.json'
@@ -16,21 +16,25 @@ def parse_args():
     parser.add_argument('--data', type=str, nargs='+', required=True, choices=datasets)
     parser.add_argument('--model', type=str, required=True, choices=['internlm2-7b', 'internlm2-20b', 'gpt-4-0125'])
     parser.add_argument('--mode', type=str, default='all', choices=['infer', 'all'])
-    parser.add_argument('--device', type=str, default=None)
+    # parser.add_argument('--device', type=str, default=None)
     parser.add_argument('--nproc', type=int, default=4)
     args = parser.parse_args()
     return args
 
-def build_model(m, device=None):
-    if isinstance(device, str):
-        device = device.split(',')
-        device = [int(d) for d in device]
+def build_model(m, setting):
+    if 'internlm2' in m:
+        session_len = 160000
+        from lmdeploy import pipeline, TurbomindEngineConfig
+        backend_config = TurbomindEngineConfig(rope_scaling_factor=2.0, session_len=session_len)
+    
     if m == 'gpt-4-0125':
         model = OpenAIWrapper('gpt-4-0125-preview')
     elif m == 'internlm2-7b':
-        model = HFChatModel('internlm2-7b', device=device)
+        model = pipeline('internlm/internlm2-chat-7b', backend_config=backend_config)
+        # model = HFChatModel('internlm2-7b')
     elif m == 'internlm2-20b':
-        model = HFChatModel('internlm2-20b', device=device)
+        model = pipeline('internlm/internlm2-chat-20b', backend_config=backend_config)
+        # model = HFChatModel('internlm2-20b')
     return model
 
 import tiktoken
@@ -52,7 +56,7 @@ def main():
 
     args = parse_args()
     model_name = args.model
-    model = build_model(args.model, args.device)
+    model = build_model(args.model)
     for dname in args.data:
         d, setting = dname.split('_')
         dataset_mode = 'less' if model.is_api else 'normal'
@@ -88,7 +92,7 @@ def main():
                 with torch.no_grad():
                     for t in tqdm(sub_tups):
                         index, prompt = t 
-                        sub_res[index] = model.generate(prompt)
+                        sub_res[index] = model.generate(prompt).text
                         dump(sub_res, sub_out_file)
 
         if world_size > 1:
