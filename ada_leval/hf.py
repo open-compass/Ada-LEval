@@ -67,8 +67,6 @@ class HFChatModel:
             except:
                 warnings.warn("Please install fastchat first to use vicuna. ")
 
-        self.explicit_device = model_kwargs.pop('device', None)
-
         from transformers import AutoTokenizer, AutoModelForCausalLM
         from transformers.generation import GenerationConfig
         
