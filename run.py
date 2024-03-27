@@ -84,6 +84,7 @@ def main():
                 sub_tups = tups[rank::world_size]
                 sub_out_file = f'results/{model_name}_{dname}_{rank}.pkl'
                 sub_res = {}
+                import torch
                 with torch.no_grad():
                     for t in tqdm(sub_tups):
                         index, prompt = t 
