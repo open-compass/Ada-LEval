@@ -15,7 +15,8 @@ Here is the evaluation result of TSort and BestAnswer benchmark. We also provide
 ### Long-Context Settings
 | TSort                | 2k   | 4k   | 8k  | 16k |
 |----------------------|------|------|-----|-----|
-| GPT-4-Turbo          | 18.5 | 15.5 | 7.5 | 3.5 |
+| GPT-4-Turbo-0125     | 15.5 | 16.5 | 8.5 | 5.5 |
+| GPT-4-Turbo-1106     | 18.5 | 15.5 | 7.5 | 3.5 |
 | GPT-3.5-Turbo-1106   | 4.0  | 4.5  | 4.5 | 5.5 |
 | Claude-2             | 5.0  | 5.0  | 4.5 | 3.0 |
 | LongChat-7b-v1.5-32k | 5.3  | 5.0  | 3.1 | 2.5 |
@@ -23,12 +24,14 @@ Here is the evaluation result of TSort and BestAnswer benchmark. We also provide
 | ChatGLM3-6B-32k      | 2.3  | 2.4  | 2.0 | 0.7 |
 | Vicuna-7b-v1.5-16k   | 5.3  | 2.2  | 2.3 | 1.7 |
 | Vicuna-13b-v1.5-16k  | 5.4  | 5.0  | 2.4 | 3.1 |
+| InternLM2-7b         | 5.1  | 3.9  | 5.1 | 4.3 |
 | Random Guess         | 4.2  | 4.2  | 4.2 | 4.2 |
 
 
 | BestAnswer           | 1k   | 2k   | 4k   | 6k   | 8k   | 12k  | 16k  |
 |----------------------|------|------|------|------|------|------|------|
-| GPT-4-Turbo          | 74.0 | 73.5 | 67.5 | 59.5 | 53.5 | 49.5 | 44.0 |
+| GPT-4-Turbo-0125     | 73.5 | 73.5 | 65.5 | 63.0 | 56.5 | 52.0 | 44.5 |
+| GPT-4-Turbo-1106     | 74.0 | 73.5 | 67.5 | 59.5 | 53.5 | 49.5 | 44.0 |
 | GPT-3.5-Turbo-1106   | 61.5 | 48.5 | 41.5 | 29.5 | 17.0 | 2.5  | 2.5  |
 | Claude-2             | 65.0 | 43.5 | 23.5 | 15.0 | 17.0 | 12.0 | 11.0 |
 | LongChat-7b-v1.5-32k | 32.4 | 10.7 | 5.7  | 3.1  | 1.9  | 1.6  | 0.8  |
@@ -36,21 +39,25 @@ Here is the evaluation result of TSort and BestAnswer benchmark. We also provide
 | ChatGLM3-6B-32k      | 39.8 | 18.8 | 9.0  | 5.0  | 3.4  | 0.9  | 0.5  |
 | Vicuna-7b-v1.5-16k   | 37.0 | 11.1 | 5.8  | 3.2  | 1.8  | 1.9  | 1.0  |
 | Vicuna-13b-v1.5-16k  | 53.4 | 29.2 | 13.1 | 4.3  | 2.2  | 1.4  | 0.9  |
+| InternLM2-7b         | 58.6 | 49.5 | 33.9 | 12.3 | 13.4 | 2.0  | 0.8  |
 | Random Guess         | 26.7 | 10.1 | 4.5  | 3.0  | 2.3  | 1.4  | 1.1  |
 
 ### Ultra-Long-Context Settings
 | TSort        | 32k           | 64k          | 128k         |
 |--------------|---------------|--------------|--------------|
-| GPT-4-Turbo  | 6.0    | 6.0 | 6.0 |
+| GPT-4-Turbo-0125 | 2.0 | 4.0 | 2.0 |
+| GPT-4-Turbo-1106  | 6.0    | 6.0 | 6.0 |
 | Claude-2     | 0.0           | 0.0          | /            |
 | Claude-2.1   | 0.0           | 0.0          | 0.0          |
 | Random Guess | 4.2           | 4.2          | 4.2          |
 
 | BestAnswer       | 32k           | 64k | 128k |
 | ----------- | ------------- | --- | ---- |
-| GPT-4-Turbo | 6.0 | 0.0 | 0.0  |
+| GPT-4-Turbo-0125 | 30.0 | 0.0 | 0.0 |
+| GPT-4-Turbo-1106 | 16.0 | 0.0 | 0.0  |
 | Claude-2      | 4.0 | 0.0  | /   |
 | Claude-2.1    | 4.0 | 0.0  | 0.0 |
+| InternLM2-7b  | 0.5 | 0.5  | 0.0 |
 | Random Guess  | 0.6 | 0.3  | 0.1 |
 ## 💻How to evaluate on Ada-LEval
 To be updated.
