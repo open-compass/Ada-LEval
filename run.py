@@ -15,7 +15,6 @@ def parse_args():
     parser.add_argument('--data', type=str, nargs='+', required=True, choices=datasets)
     parser.add_argument('--model', type=str, required=True, choices=['internlm2-7b', 'internlm2-20b', 'gpt-4-0125'])
     parser.add_argument('--mode', type=str, default='all', choices=['infer', 'all'])
-    # parser.add_argument('--device', type=str, default=None)
     parser.add_argument('--nproc', type=int, default=4)
     args = parser.parse_args()
     return args
