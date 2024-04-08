@@ -1,6 +1,6 @@
 # Ada-LEval
 
-> The official implementation of "Ada-LEval: Evaluating long-context LLMs with length-adaptable benchmarks"
+**The official implementation of "Ada-LEval: Evaluating long-context LLMs with length-adaptable benchmarks"**
 
 **Ada-LEval** is a pioneering benchmark to assess the long-context capabilities with length-adaptable questions. It comprises two challenging tasks: **TSort**, which involves arranging text segments into the correct order, and **BestAnswer**, which requires choosing the best answer of a question among multiple candidates.
 
@@ -12,6 +12,7 @@ Both tasks feature the following advantages:
 <p align="center">
   <img src="assets/AdaLEval.png" width="60%">
 </p>
+
 ## 🛠️QuickStart
 
 In this repo, we implement the evaluation of Ada-LEval on GPT-4-Turbo-0125 (an example for APIs) and internlm2-[7b/20b] (an example for opensource LLMs). You can follow our implementation to evaluate Ada-LEval on your custom LLMs. 
