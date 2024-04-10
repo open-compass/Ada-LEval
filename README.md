@@ -1,6 +1,6 @@
 # Ada-LEval
 
-**The official implementation of "Ada-LEval: Evaluating long-context LLMs with length-adaptable benchmarks"**
+**The official implementation of ["Ada-LEval: Evaluating long-context LLMs with length-adaptable benchmarks"](https://arxiv.org/abs/2404.06480)**
 
 **Ada-LEval** is a pioneering benchmark to assess the long-context capabilities with length-adaptable questions. It comprises two challenging tasks: **TSort**, which involves arranging text segments into the correct order, and **BestAnswer**, which requires choosing the best answer of a question among multiple candidates.
 
@@ -46,7 +46,7 @@ Here is the evaluation result of TSort and BestAnswer benchmark under **long-con
 
 **Definition:** long-context  ->  context window < 32k; ultra-long-context: context-window >= 32k
 
-Setting 
+**The Number of Evaluation Samples:** 1. API models on long-context: 200; 2. API models on ultra-long-context: 50; 3. Open-source models on long-context: 1000; 4. Open-source models on ultra-long-context: 200. 
 
 #### TL;DR: 
 
