@@ -90,4 +90,14 @@ Blanks indicate the result under the corresponding setting is not evaluated.
 | Random Guess         | 26.7 | 10.1 | 4.5  | 3.0  | 2.3  | 1.4  | 1.1  | 0.6  | 0.3  | 0.1  |
 
 ## 🖊️Citation
-TBD. 
+
+```bib
+@misc{wang2024adaleval,
+      title={Ada-LEval: Evaluating long-context LLMs with length-adaptable benchmarks}, 
+      author={Chonghua Wang and Haodong Duan and Songyang Zhang and Dahua Lin and Kai Chen},
+      year={2024},
+      eprint={2404.06480},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
+```
