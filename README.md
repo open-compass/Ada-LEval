@@ -2,6 +2,10 @@
 
 **The official implementation of ["Ada-LEval: Evaluating long-context LLMs with length-adaptable benchmarks"](https://arxiv.org/abs/2404.06480)**
 
+<p align="center">
+  <img src="assets/BestAnswer.png" width="80%">
+</p>
+
 **Ada-LEval** is a pioneering benchmark to assess the long-context capabilities with length-adaptable questions. It comprises two challenging tasks: **TSort**, which involves arranging text segments into the correct order, and **BestAnswer**, which requires choosing the best answer of a question among multiple candidates.
 
 Both tasks feature the following advantages:
@@ -88,10 +92,6 @@ Blanks indicate the result under the corresponding setting is not evaluated.
 | Vicuna-13b-v1.5-16k  | 53.4 | 29.2 | 13.1 | 4.3  | 2.2  | 1.4  | 0.9  |      |      |      |
 | InternLM2-7b         | 58.6 | 49.5 | 33.9 | 12.3 | 13.4 | 2.0  | 0.8  | 0.5  | 0.5  | 0.0  |
 | Random Guess         | 26.7 | 10.1 | 4.5  | 3.0  | 2.3  | 1.4  | 1.1  | 0.6  | 0.3  | 0.1  |
-
-<p align="center">
-  <img src="assets/BestAnswer.png" width="100%">
-</p>
 
 ## 🖊️Citation
 
