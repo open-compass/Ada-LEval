@@ -89,6 +89,10 @@ Blanks indicate the result under the corresponding setting is not evaluated.
 | InternLM2-7b         | 58.6 | 49.5 | 33.9 | 12.3 | 13.4 | 2.0  | 0.8  | 0.5  | 0.5  | 0.0  |
 | Random Guess         | 26.7 | 10.1 | 4.5  | 3.0  | 2.3  | 1.4  | 1.1  | 0.6  | 0.3  | 0.1  |
 
+<p align="center">
+  <img src="assets/BestAnswer.png" width="100%">
+</p>
+
 ## 🖊️Citation
 
 ```bib
