@@ -81,15 +81,15 @@ You must give me only the designation of the MOST helpful answer.
             nc = line['num_choice']
             cands = [f'A{i}' for i in range(1, nc + 1)]
             finds = [line['prediction'].find(c) for c in cands]
-            matched = sum([x for x in finds if x >= 0])
+            matched = sum([x >= 0 for x in finds])
             if matched >= 1:
                 for i in range(nc - 1, -1, -1):
                     if finds[i] >= 0:
                         return cands[i]
             else:
-                cands = [f'A{i}' for i in range(1, nc + 1)]
+                cands = [str(i) for i in range(1, nc + 1)]
                 finds = [line['prediction'].find(c) for c in cands]
-                matched = sum([x for x in finds if x >= 0])
+                matched = sum([x >= 0 for x in finds])
                 if matched >= 1:
                     for i in range(nc - 1, -1, -1):
                         if finds[i] >= 0:
