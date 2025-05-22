@@ -96,12 +96,11 @@ Blanks indicate the result under the corresponding setting is not evaluated.
 ## 🖊️Citation
 
 ```bib
-@misc{wang2024adaleval,
-      title={Ada-LEval: Evaluating long-context LLMs with length-adaptable benchmarks}, 
-      author={Chonghua Wang and Haodong Duan and Songyang Zhang and Dahua Lin and Kai Chen},
-      year={2024},
-      eprint={2404.06480},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL}
+@inproceedings{wang2024ada,
+  title={Ada-LEval: Evaluating long-context LLMs with length-adaptable benchmarks},
+  author={Wang, Chonghua and Duan, Haodong and Zhang, Songyang and Lin, Dahua and Chen, Kai},
+  booktitle={Proceedings of the 2024 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (Volume 1: Long Papers)},
+  pages={3712--3724},
+  year={2024}
 }
 ```
